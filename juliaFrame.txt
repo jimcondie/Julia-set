@@ -1,0 +1,11 @@
+1500 1500 100000 -1 0 0 1 0 1
+
+Image Width pixels
+Image Height pixels
+maxiter
+C Real Part
+C Imaginary Part  (f(z)=z^2+C)
+MinX
+MaxX
+MinY
+MaxY (z=x+i*y)
