@@ -18,8 +18,8 @@ the first two numbers are the # of pixels.  the maxiter is maximum iterations pe
 
 interesting values for C:
   C=0 yields a unit circle, 
-  C=i yields an interesting strand,
-  C=-1 gives a nice pattern,
+  C=i yields the 'dendrite fractal',
+  C=-0.75 gives the 'San Marco fracal' (wolfram alpha, 'Julia set')
   
   there's an example picture of C=i as a .ppm file.  windows users will need 3rd party image viewers that support .ppm.  Linux users will be fine.  
 
