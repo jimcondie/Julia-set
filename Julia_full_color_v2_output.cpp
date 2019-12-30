@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cmath>
 #include <ctime>
+#include <string>
 
 
 using namespace std;
@@ -33,7 +34,7 @@ double domain=maxX-minX;
 
 double realPart=domain/(width)*pixelX+minX;
 return realPart;
-	
+
 }
 
 //map y value into imaginary part
@@ -43,7 +44,7 @@ double range=maxY-minY;
 
 double imaginaryPart=range/(height)*pixelY+minY;
 return imaginaryPart;
-	
+
 }
 
 //function that calculates magnitudes
@@ -55,11 +56,11 @@ return mag;
 
 //function that finds R value from C
 double findRValue(double cReal, double cImaginary)
-{	
+{
 //find magnitude of C
 double magOfC=mag(cReal, cImaginary);
 //find R using formula
-double rValue=(1+sqrt(1+4*magOfC))/2;	
+double rValue=(1+sqrt(1+4*magOfC))/2;
 return rValue;
 }
 
@@ -75,33 +76,33 @@ int iterateFunction(int maxiter, double cReal, double cImaginary, double zReal, 
 
 	//initialize n at 0
 	int n=0;
-	
+
 	//set initial f^0(z)
 	double fReal=zReal;
 	double fImaginary=zImaginary;
-	
-		
+
+
 		while(n<maxiter)
 		{
-		
+
 		//calculate f^n(z), at the same time reassign input parameters, fReal and fImaginary
 		double fRealTemp=fReal*fReal-fImaginary*fImaginary+cReal;
 		double fImaginaryTemp=2*fReal*fImaginary+cImaginary;
-			
+
 			//break if |f^n(z)|>R
 			if(mag(fRealTemp,fImaginaryTemp) >rValue)
 			break;
-			
+
 			else
 			{
 			fReal=fRealTemp;
 			fImaginary=fImaginaryTemp;
 			n++;
 			}
-			
-		
+
+
 		}
-	
+
 	//return value of n
 	return n;
 }
@@ -115,15 +116,17 @@ void colorPixel(int n, int maxiter,color *pallete, ofstream &ofile)
 	{
 //write pixel to file
 ofile<<0<<" "<<0<<" "<<0<<" ";
+
 		is_in=true;
-	}	
+	}
 
 //color pixel based on determined pallete
 	if(is_in==false)
 	{
 	//write pixel to file
-ofile<<(pallete+n)->r<<" "<<(pallete+n)->g<<" "<<(pallete+n)->b<<" ";	
-	}	
+ofile<<(pallete+n)->r<<" "<<(pallete+n)->g<<" "<<(pallete+n)->b<<" ";
+
+	}
 
 
 }
@@ -153,8 +156,8 @@ ifstream ifile("juliaFrame.txt");
 ifile>>width>>height>>maxiter>>cReal>>cImaginary>>minX>>maxX>>minY>>maxY;
 ifile.close();
 
+ofstream ofile(to_string(width)+" "+to_string(height)+" "+to_string(maxiter)+" "+to_string(cReal)+" "+to_string(cImaginary)+" "+to_string(minX)+" "+to_string(maxX)+" "+to_string(minY)+" "+to_string(maxY)+".ppm");
 
-ofstream ofile("test.ppm");
 
 //PPM header
 ofile<<"P3 " << endl << width << " " << height << endl;
@@ -174,17 +177,17 @@ for(int y=0; y<height; y++)
 {
 	for(int x=0; x<width; x++)
 	{
-		cout<<"row: "<<y<<" col: "<<x<<endl;
+		//cout<<"row: "<<y<<" col: "<<x<<endl;
 	//map pixel to z
 	double zReal=mapXIntoReal(width,minX,maxX,x);
 	double zImaginary=mapYIntoImaginary(height,minY,maxY,y);
-	
+
 	//find n for z value
 	int n=iterateFunction(maxiter, cReal, cImaginary, zReal, zImaginary);
-	
+
 	//write n to output
 	colorPixel(n, maxiter,pallete ,ofile);
-	
+
 	}
 ofile<<endl;
 
